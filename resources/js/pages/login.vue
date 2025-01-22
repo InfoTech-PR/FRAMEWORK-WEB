@@ -9,12 +9,12 @@
         <div class="login-container w-100">
           <form @submit.prevent="submitLogin">
             <div class="form-group mb-4">
-              <label for="name">Usuário</label>
+              <label for="name" class="text-light">Usuário</label>
               <input type="text" id="name" v-model="name" class="form-control" required placeholder="Digite seu usuário" />
             </div>
 
             <div class="form-group mb-4">
-              <label for="password">Senha</label>
+              <label for="password" class="text-light">Senha</label>
               <div class="input-group">
                 <input v-if="showPassword" type="text" id="password" v-model="password" class="form-control" required placeholder="Digite sua senha" />
                 <input v-else type="password" id="password" v-model="password" class="form-control" required placeholder="Digite sua senha" />
@@ -63,35 +63,35 @@ export default {
       this.showPassword = !this.showPassword;
     },
     async submitLogin() {
-      this.isLoading = true;
+        this.isLoading = true;
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/api/login", {
+                name: this.name,
+                password: this.password,
+            });
 
-      try {
-        const response = await axios.post("http://127.0.0.1:8000/api/login", {
-          name: this.name,
-          password: this.password,
-        });
+            if (response.status === 200) {
+                const token = response.data.token;
+                localStorage.setItem('token', token);
+                this.$router.push('/home');
+            }
+        } catch (error) {
+            this.isLoading = false;
 
-        if (response.status === 200) {
-            this.$router.push(response.data.redirect);
-            /*const token = response.data.token;
-            localStorage.setItem('token', token);*/
+            if (error.response) {
+                if (error.response.status === 401) {
+                    this.errorMessage = "Credenciais inválidas! Por favor, tente novamente.";
+                } else {
+                    this.errorMessage = error.response.data.message || "Erro no servidor!";
+                }
+            } else {
+                this.errorMessage = "Erro de rede. Verifique sua conexão.";
+            }
+
+            this.error = true;
         }
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status === 500) {
-            this.errorMessage =
-              error.response.data.message || "Erro no servidor. Tente novamente mais tarde.";
-          } else {
-            this.errorMessage = error.response.data.message || "Erro ao tentar autenticar";
-          }
-        } else {
-          this.errorMessage = "Erro de rede. Verifique sua conexão com a internet.";
-        }
-        this.error = true;
-      } finally {
-        this.isLoading = false;
-      }
-    },
+    }
+,
     closeErrorModal() {
       this.error = false;
       this.errorMessage = "";
@@ -116,6 +116,7 @@ export default {
 .form-section {
   display: flex;
   justify-content: center;
+  background-color: rgb(71, 99, 108);
   align-items: center;
 }
 

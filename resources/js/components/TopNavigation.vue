@@ -36,7 +36,8 @@ export default {
       }
     },
     logout() {
-      this.$router.push('/');
+        localStorage.removeItem('token');
+        this.$router.push('/');
     },
   },
 };

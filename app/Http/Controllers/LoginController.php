@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
+use App\Http\Controllers\Controller;
 
-class LoginController extends Controller {
-    public function index() {
-        return view('home');
-    }
-
-    public function login(Request $request) {
+class LoginController extends Controller
+{
+    public function login(Request $request)
+    {
         $credentials = $request->only('name', 'password');
         try {
             if (Auth::attempt($credentials)) {
-                return response()->json(['redirect' => '/home']);
+                $user = Auth::user();
+                // $token = $user->createToken('YourAppName')->plainTextToken;
+                $token = 0;
+                return response()->json(['token' => $token]);
             } else {
                 return response()->json(['message' => 'Usuário ou senha inválidos.'], 401);
             }
@@ -27,8 +28,9 @@ class LoginController extends Controller {
         }
     }
 
-    public function logout() {
-        Auth::logout();
-        return view('home');
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Desconectado com sucesso.']);
     }
 }

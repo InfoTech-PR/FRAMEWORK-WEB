@@ -23270,6 +23270,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       }))();
     },
     logout: function logout() {
+      localStorage.removeItem('token');
       this.$router.push('/');
     }
   }
@@ -23436,7 +23437,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     submitLogin: function submitLogin() {
       var _this = this;
       return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var response;
+        var response, token;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
@@ -23450,34 +23451,31 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
             case 4:
               response = _context.sent;
               if (response.status === 200) {
-                _this.$router.push(response.data.redirect);
-                /*const token = response.data.token;
-                localStorage.setItem('token', token);*/
+                token = response.data.token;
+                localStorage.setItem('token', token);
+                _this.$router.push('/home');
               }
-              _context.next = 12;
+              _context.next = 13;
               break;
             case 8:
               _context.prev = 8;
               _context.t0 = _context["catch"](1);
+              _this.isLoading = false;
               if (_context.t0.response) {
-                if (_context.t0.response.status === 500) {
-                  _this.errorMessage = _context.t0.response.data.message || "Erro no servidor. Tente novamente mais tarde.";
+                if (_context.t0.response.status === 401) {
+                  _this.errorMessage = "Credenciais inválidas! Por favor, tente novamente.";
                 } else {
-                  _this.errorMessage = _context.t0.response.data.message || "Erro ao tentar autenticar";
+                  _this.errorMessage = _context.t0.response.data.message || "Erro no servidor!";
                 }
               } else {
-                _this.errorMessage = "Erro de rede. Verifique sua conexão com a internet.";
+                _this.errorMessage = "Erro de rede. Verifique sua conexão.";
               }
               _this.error = true;
-            case 12:
-              _context.prev = 12;
-              _this.isLoading = false;
-              return _context.finish(12);
-            case 15:
+            case 13:
             case "end":
               return _context.stop();
           }
-        }, _callee, null, [[1, 8, 12, 15]]);
+        }, _callee, null, [[1, 8]]);
       }))();
     },
     closeErrorModal: function closeErrorModal() {
@@ -23793,7 +23791,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.submitLogin && $options.submitLogin.apply($options, arguments);
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "for": "name"
+    "for": "name",
+    "class": "text-light"
   }, "Usuário", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     id: "name",
@@ -23804,7 +23803,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     required: "",
     placeholder: "Digite seu usuário"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "for": "password"
+    "for": "password",
+    "class": "text-light"
   }, "Senha", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [$data.showPassword ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("input", {
     key: 0,
     type: "text",
@@ -23911,6 +23911,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_index_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pages/index.vue */ "./resources/js/pages/index.vue");
 /* harmony import */ var _pages_home_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pages/home.vue */ "./resources/js/pages/home.vue");
 /* harmony import */ var _pages_projetos_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../pages/projetos.vue */ "./resources/js/pages/projetos.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+
 
 
 
@@ -23919,7 +23921,10 @@ __webpack_require__.r(__webpack_exports__);
 var routes = [{
   path: '/',
   name: 'login',
-  component: _pages_login_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  component: _pages_login_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+  meta: {
+    requiresGuest: true
+  }
 }, {
   path: '/index',
   name: 'index',
@@ -23927,16 +23932,53 @@ var routes = [{
   children: [{
     path: '/home',
     name: 'home',
-    component: _pages_home_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    component: _pages_home_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    meta: {
+      requiresAuth: true
+    }
   }, {
     path: '/projetos',
     name: 'projetos',
-    component: _pages_projetos_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    component: _pages_projetos_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    meta: {
+      requiresAuth: true
+    }
   }]
 }];
 var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_4__.createRouter)({
   history: (0,vue_router__WEBPACK_IMPORTED_MODULE_4__.createWebHistory)(),
   routes: routes
+});
+router.beforeEach(function (to, from, next) {
+  var token = localStorage.getItem('token');
+  if (to.matched.some(function (record) {
+    return record.meta.requiresGuest;
+  })) {
+    if (token) {
+      next('/home');
+    } else {
+      next();
+    }
+  } else if (to.matched.some(function (record) {
+    return record.meta.requiresAuth;
+  })) {
+    if (token) {
+      axios__WEBPACK_IMPORTED_MODULE_5__["default"].get('http://127.0.0.1:8000/api/user', {
+        headers: {
+          'Authorization': "Bearer ".concat(token)
+        }
+      }).then(function (response) {
+        next();
+      })["catch"](function (error) {
+        localStorage.removeItem('token');
+        next('/');
+      });
+    } else {
+      next('/');
+    }
+  } else {
+    next();
+  }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
 
@@ -37061,7 +37103,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.login-page[data-v-780e8960] {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n}\n.image-section img[data-v-780e8960] {\n  width: 100%;\n  height: 100%;\n  -o-object-fit: cover;\n     object-fit: cover;\n}\n.form-section[data-v-780e8960] {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n.login-container[data-v-780e8960] {\n  max-width: 400px;\n  width: 100%;\n}\n.error-modal[data-v-780e8960] {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  background-color: rgba(0, 0, 0, 0.8);\n  color: white;\n  border-radius: 8px;\n  padding: 15px;\n  z-index: 1050;\n  max-width: 80%;\n  width: 400px;\n}\nbutton.btn[data-v-780e8960] {\n  font-size: 16px;\n}\n.form-group[data-v-780e8960] {\n  margin-bottom: 20px;\n}\n.input-group-append button[data-v-780e8960] {\n  background-color: white;\n  cursor: pointer;\n  border: 1px solid #d9dde1;\n  border-left: none;\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.login-page[data-v-780e8960] {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n}\n.image-section img[data-v-780e8960] {\n  width: 100%;\n  height: 100%;\n  -o-object-fit: cover;\n     object-fit: cover;\n}\n.form-section[data-v-780e8960] {\n  display: flex;\n  justify-content: center;\n  background-color: rgb(71, 99, 108);\n  align-items: center;\n}\n.login-container[data-v-780e8960] {\n  max-width: 400px;\n  width: 100%;\n}\n.error-modal[data-v-780e8960] {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  background-color: rgba(0, 0, 0, 0.8);\n  color: white;\n  border-radius: 8px;\n  padding: 15px;\n  z-index: 1050;\n  max-width: 80%;\n  width: 400px;\n}\nbutton.btn[data-v-780e8960] {\n  font-size: 16px;\n}\n.form-group[data-v-780e8960] {\n  margin-bottom: 20px;\n}\n.input-group-append button[data-v-780e8960] {\n  background-color: white;\n  cursor: pointer;\n  border: 1px solid #d9dde1;\n  border-left: none;\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -47482,6 +47524,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 axios__WEBPACK_IMPORTED_MODULE_5__["default"].defaults.baseURL = 'http://127.0.0.1:8000/api';
+axios__WEBPACK_IMPORTED_MODULE_5__["default"].defaults.headers.common['Authorization'] = "Bearer ".concat(localStorage.getItem('token'));
 var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 app.use(_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 app.use(bootstrap_vue_3__WEBPACK_IMPORTED_MODULE_4__.BootstrapVue3);
