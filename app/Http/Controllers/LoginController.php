@@ -3,20 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
     public function login(Request $request)
     {
-        $credentials = $request->only('name', 'password');
+        $credentials = $request->only('NOME', 'SENHA');
+
         try {
-            if (Auth::attempt($credentials)) {
-                $user = Auth::user();
-                // $token = $user->createToken('YourAppName')->plainTextToken;
-                $token = 0;
+            $usuario = Usuario::where('NOME', $credentials['NOME'])->first();
+            if ($usuario && Hash::check($credentials['SENHA'], $usuario->SENHA)) {
+                Auth::login($usuario);
+                $token = 0; // Gerar token futuramente
                 return response()->json(['token' => $token]);
             } else {
                 return response()->json(['message' => 'Usuário ou senha inválidos.'], 401);
@@ -24,6 +28,7 @@ class LoginController extends Controller
         } catch (QueryException $e) {
             return response()->json(['message' => 'Erro ao conectar ao banco de dados. Tente novamente mais tarde.'], 500);
         } catch (\Exception $e) {
+            Log::error('Erro desconhecido: ' . $e->getMessage());
             return response()->json(['message' => 'Erro desconhecido. Tente novamente mais tarde.'], 500);
         }
     }
@@ -32,10 +37,5 @@ class LoginController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Desconectado com sucesso.']);
-    }
-
-    public function user(Request $request)
-    {
-        return response()->json($request->user());
     }
 }

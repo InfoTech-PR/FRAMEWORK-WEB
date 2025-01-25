@@ -66,8 +66,8 @@ export default {
         this.isLoading = true;
         try {
             const response = await axios.post("http://127.0.0.1:8000/api/login", {
-                name: this.name,
-                password: this.password,
+                NOME: this.name,
+                SENHA: this.password,
             });
 
             if (response.status === 200) {

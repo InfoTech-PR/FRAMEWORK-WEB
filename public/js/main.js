@@ -23241,14 +23241,13 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
   data: function data() {
     return {
       user: {
-        name: 'Visitante',
-        // Nome padrão, caso não consiga pegar da API
-        photoUrl: 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png' // Foto padrão
+        name: '',
+        photoUrl: ''
       }
     };
   },
   created: function created() {
-    this.getUserInfo(); // Chama a função ao criar o componente
+    this.getUserInfo();
   },
   methods: {
     getUserInfo: function getUserInfo() {
@@ -23259,7 +23258,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.prev = 0;
-              token = localStorage.getItem('token'); // Pega o token armazenado
+              token = localStorage.getItem('token');
               if (!token) {
                 _context.next = 8;
                 break;
@@ -23267,14 +23266,13 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               _context.next = 5;
               return axios__WEBPACK_IMPORTED_MODULE_0__["default"].get('http://127.0.0.1:8000/api/user', {
                 headers: {
-                  Authorization: "Bearer ".concat(token) // Adiciona o token de autenticação
+                  Authorization: "Bearer ".concat(token)
                 }
               });
             case 5:
               response = _context.sent;
-              // Atualiza o estado do componente com os dados do usuário
-              _this.user.name = response.data.name || 'Visitante'; // Ajuste o nome conforme o retorno
-              _this.user.photoUrl = response.data.photoUrl || 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'; // Foto do usuário ou a padrão
+              _this.user.name = response.data.data.NOME || 'Visitante';
+              _this.user.photoUrl = response.data.data.FOTO || 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png';
             case 8:
               _context.next = 13;
               break;
@@ -23291,7 +23289,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     },
     logout: function logout() {
       localStorage.removeItem('token');
-      this.$router.push('/'); // Redireciona para o login após sair
+      this.$router.push('/');
     }
   }
 });
@@ -23465,8 +23463,8 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               _context.prev = 1;
               _context.next = 4;
               return axios__WEBPACK_IMPORTED_MODULE_0__["default"].post("http://127.0.0.1:8000/api/login", {
-                name: _this.name,
-                password: _this.password
+                NOME: _this.name,
+                SENHA: _this.password
               });
             case 4:
               response = _context.sent;
