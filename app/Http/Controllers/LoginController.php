@@ -33,4 +33,9 @@ class LoginController extends Controller
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Desconectado com sucesso.']);
     }
+
+    public function user(Request $request)
+    {
+        return response()->json($request->user());
+    }
 }

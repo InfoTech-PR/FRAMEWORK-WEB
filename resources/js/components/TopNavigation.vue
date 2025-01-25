@@ -16,28 +16,36 @@ export default {
   data() {
     return {
       user: {
-        name: 'Visitante',
-        photoUrl: 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png',
+        name: 'Visitante', // Nome padrão, caso não consiga pegar da API
+        photoUrl: 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png', // Foto padrão
       },
     };
   },
   created() {
-    this.getUserInfo();
+    this.getUserInfo(); // Chama a função ao criar o componente
   },
   methods: {
     async getUserInfo() {
       try {
-        // const response = await axios.get('http://127.0.0.1:8000/api/users');
-        // if (response.data) {
-        //     this.user.name = response.data.name;
-        // }
+        const token = localStorage.getItem('token'); // Pega o token armazenado
+        if (token) {
+          const response = await axios.get('http://127.0.0.1:8000/api/user', {
+            headers: {
+              Authorization: `Bearer ${token}`, // Adiciona o token de autenticação
+            },
+          });
+
+          // Atualiza o estado do componente com os dados do usuário
+          this.user.name = response.data.name || 'Visitante'; // Ajuste o nome conforme o retorno
+          this.user.photoUrl = response.data.photoUrl || 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'; // Foto do usuário ou a padrão
+        }
       } catch (error) {
         console.error('Erro ao buscar dados do usuário:', error);
       }
     },
     logout() {
-        localStorage.removeItem('token');
-        this.$router.push('/');
+      localStorage.removeItem('token');
+      this.$router.push('/'); // Redireciona para o login após sair
     },
   },
 };
