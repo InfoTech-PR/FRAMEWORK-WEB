@@ -23600,7 +23600,9 @@ var _hoisted_1 = {
   key: 0
 };
 var _hoisted_2 = {
-  key: 1
+  key: 1,
+  src: "/ima",
+  alt: "Logo"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_SidebarLink = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SidebarLink");
@@ -23609,7 +23611,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
       width: $setup.sidebarWidth
     })
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, [$setup.collapsed ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_1, _cache[1] || (_cache[1] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, "I", -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, "T", -1 /* HOISTED */)]))) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_2, "InfoTech"))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SidebarLink, {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, [$setup.collapsed ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_1, _cache[1] || (_cache[1] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, "I", -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, "T", -1 /* HOISTED */)]))) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_2))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SidebarLink, {
     to: "/home",
     icon: "fas fa-home"
   }, {

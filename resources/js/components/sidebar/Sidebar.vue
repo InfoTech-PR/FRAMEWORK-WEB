@@ -14,11 +14,11 @@ export default {
 <template>
   <div class="sidebar" :style="{ width: sidebarWidth }">
     <h1>
-      <span v-if="collapsed">
+        <span v-if="collapsed">
         <div>I</div>
         <div>T</div>
-      </span>
-      <span v-else>InfoTech</span>
+        </span>
+        <img v-else src="/ima" alt="Logo" />
     </h1>
 
     <SidebarLink to="/home" icon="fas fa-home">Home</SidebarLink>
