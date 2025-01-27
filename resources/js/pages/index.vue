@@ -1,9 +1,9 @@
 <template>
   <div class="home">
-    <TopNavigation />
+    <TopNavigation :sidebarWidth="sidebarWidth" />
     <div class="main-layout">
       <Sidebar />
-      <div class="content" :style="{ 'margin-left': sidebarWidth }">
+      <div class="content" :style="{ 'margin-left': sidebarWidth + 'px' }">
         <router-view></router-view>
       </div>
     </div>

@@ -1,18 +1,18 @@
 <script>
 import SidebarLink from './SidebarLink'
-import { collapsed, toggleSidebar } from './state'
+import { collapsed, toggleSidebar, sidebarWidth } from './state'
 
 export default {
   props: {},
   components: { SidebarLink },
   setup() {
-    return { collapsed, toggleSidebar }
+    return { collapsed, toggleSidebar, sidebarWidth }
   }
 }
 </script>
 
 <template>
-  <div class="sidebar" :style="{ width: collapsed ? '70px' : '280px' }">
+  <div class="sidebar" :style="{ width: sidebarWidth }">
     <h1>
         <img class="img-icon" v-if="collapsed" src="../../../images/icon.png" alt="Logo" />
         <img class="img-logo" v-else src="../../../images/logo_infotech.png" alt="Logo" />
