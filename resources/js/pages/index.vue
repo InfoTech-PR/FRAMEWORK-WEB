@@ -47,5 +47,6 @@ export default defineComponent({
   overflow-y: auto;
   margin-left: 280px;
   margin-top: 60px;
+  transition: margin-left 0.3s ease;
 }
 </style>

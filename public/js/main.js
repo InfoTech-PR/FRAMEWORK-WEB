@@ -23319,8 +23319,7 @@ __webpack_require__.r(__webpack_exports__);
   setup: function setup() {
     return {
       collapsed: _state__WEBPACK_IMPORTED_MODULE_1__.collapsed,
-      toggleSidebar: _state__WEBPACK_IMPORTED_MODULE_1__.toggleSidebar,
-      sidebarWidth: _state__WEBPACK_IMPORTED_MODULE_1__.sidebarWidth
+      toggleSidebar: _state__WEBPACK_IMPORTED_MODULE_1__.toggleSidebar
     };
   }
 });
@@ -23595,13 +23594,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   render: () => (/* binding */ render)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _images_icon_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../images/icon.png */ "./resources/images/icon.png");
+/* harmony import */ var _images_logo_infotech_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../images/logo_infotech.png */ "./resources/images/logo_infotech.png");
+
+
 
 var _hoisted_1 = {
-  key: 0
+  key: 0,
+  "class": "img-icon",
+  src: _images_icon_png__WEBPACK_IMPORTED_MODULE_1__["default"],
+  alt: "Logo"
 };
 var _hoisted_2 = {
   key: 1,
-  src: "/ima",
+  "class": "img-logo",
+  src: _images_logo_infotech_png__WEBPACK_IMPORTED_MODULE_2__["default"],
   alt: "Logo"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -23609,14 +23616,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     "class": "sidebar",
     style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
-      width: $setup.sidebarWidth
+      width: $setup.collapsed ? '70px' : '280px'
     })
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, [$setup.collapsed ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_1, _cache[1] || (_cache[1] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, "I", -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, "T", -1 /* HOISTED */)]))) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_2))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SidebarLink, {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, [$setup.collapsed ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_1)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_2))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SidebarLink, {
     to: "/home",
     icon: "fas fa-home"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _cache[2] || (_cache[2] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Home")]);
+      return _cache[1] || (_cache[1] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Home")]);
     }),
     _: 1 /* STABLE */
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SidebarLink, {
@@ -23624,7 +23631,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     icon: "fas fa-columns"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _cache[3] || (_cache[3] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Projetos")]);
+      return _cache[2] || (_cache[2] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Projetos")]);
     }),
     _: 1 /* STABLE */
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SidebarLink, {
@@ -23632,7 +23639,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     icon: "fas fa-chart-bar"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _cache[4] || (_cache[4] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Controle de Versões / Correções")]);
+      return _cache[3] || (_cache[3] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Controle de Versões / Correções")]);
     }),
     _: 1 /* STABLE */
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
@@ -23642,7 +23649,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function () {
       return $setup.toggleSidebar && $setup.toggleSidebar.apply($setup, arguments);
     })
-  }, _cache[5] || (_cache[5] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+  }, _cache[4] || (_cache[4] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fas fa-angle-double-left"
   }, null, -1 /* HOISTED */)]), 2 /* CLASS */)], 4 /* STYLE */);
 }
@@ -37051,7 +37058,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.sidebar[data-v-6217b0e4] {\n  color: white;\n  background-color: var(--sidebar-bg-color);\n\n  float: left;\n  position: fixed;\n  z-index: 1;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  padding: 0.5em;\n\n  transition: 0.3s ease;\n\n  display: flex;\n  flex-direction: column;\n}\n.sidebar h1[data-v-6217b0e4] {\n  height: 2.5em;\n}\n.collapse-icon[data-v-6217b0e4] {\n  position: absolute;\n  bottom: 0;\n  padding: 0.75em;\n\n  color: rgba(255, 255, 255, 0.7);\n\n  transition: 0.2s linear;\n}\n.rotate-180[data-v-6217b0e4] {\n  transform: rotate(180deg);\n  transition: 0.2s linear;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.sidebar[data-v-6217b0e4] {\n  color: white;\n  background-color: var(--sidebar-bg-color);\n\n  float: left;\n  position: fixed;\n  z-index: 1;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  padding: 0.5em;\n\n  transition: 0.3s ease;\n\n  display: flex;\n  flex-direction: column;\n}\n.sidebar h1[data-v-6217b0e4] {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 2.5em;\n}\n.collapse-icon[data-v-6217b0e4] {\n  position: absolute;\n  bottom: 0;\n  padding: 0.75em;\n\n  color: rgba(255, 255, 255, 0.7);\n\n  transition: 0.2s linear;\n}\n.rotate-180[data-v-6217b0e4] {\n  transform: rotate(180deg);\n  transition: 0.2s linear;\n}\n.img-logo[data-v-6217b0e4]{\n    height: 100px;\n    width: auto;\n}\n.img-icon[data-v-6217b0e4] {\n  height: 20px;\n  width: auto;\n  animation: rotate-6217b0e4 2s linear infinite;\n}\n@keyframes rotate-6217b0e4 {\n0% {\n    transform: rotate(0deg);\n}\n100% {\n    transform: rotate(360deg);\n}\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -37075,7 +37082,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.fade-enter-active[data-v-58f578b0],\n.fade-leave-active[data-v-58f578b0] {\n  transition: opacity 0.1s;\n}\n.fade-enter[data-v-58f578b0],\n.fade-leave-to[data-v-58f578b0] {\n  opacity: 0;\n}\n.link[data-v-58f578b0] {\n  display: flex;\n  align-items: center;\n\n  cursor: pointer;\n  position: relative;\n  font-weight: 400;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n          user-select: none;\n\n  margin: 0.1em 0;\n  padding: 0.4em;\n  border-radius: 0.25em;\n  height: 1.5em;\n\n  color: white;\n  text-decoration: none;\n}\n.link[data-v-58f578b0]:hover {\n  background-color: var(--sidebar-item-hover);\n}\n.link.active[data-v-58f578b0] {\n  background-color: var(--sidebar-item-active);\n}\n.link .icon[data-v-58f578b0] {\n  flex-shrink: 0;\n  width: 25px;\n  margin-right: 10px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.fade-enter-active[data-v-58f578b0],\n.fade-leave-active[data-v-58f578b0] {\n  transition: opacity 0.1s;\n}\n.fade-enter[data-v-58f578b0],\n.fade-leave-to[data-v-58f578b0] {\n  opacity: 0;\n}\n.link[data-v-58f578b0] {\n  display: flex;\n  align-items: center;\n\n  cursor: pointer;\n  position: relative;\n  font-weight: 400;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n          user-select: none;\n\n  margin: 0.5em 0;\n  padding: 8px 12px;\n  border-radius: 0.25em;\n  height: 2.5em;\n\n  color: white;\n  text-decoration: none;\n}\n.link[data-v-58f578b0]:hover {\n  background-color: var(--sidebar-item-hover);\n}\n.link.active[data-v-58f578b0] {\n  background-color: var(--sidebar-item-active);\n}\n.link .icon[data-v-58f578b0] {\n  flex-shrink: 0;\n  width: 25px;\n  margin-right: 10px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -37099,7 +37106,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.home[data-v-0b5dcf8e] {\n  display: flex;\n  flex-direction: column;\n  height: 100vh;\n}\n.main-layout[data-v-0b5dcf8e] {\n  display: flex;\n  flex: 1;\n  margin-top: 60px;\n}\n.content[data-v-0b5dcf8e] {\n  flex: 1;\n  padding: 20px;\n  overflow-y: auto;\n  margin-left: 280px;\n  margin-top: 60px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.home[data-v-0b5dcf8e] {\n  display: flex;\n  flex-direction: column;\n  height: 100vh;\n}\n.main-layout[data-v-0b5dcf8e] {\n  display: flex;\n  flex: 1;\n  margin-top: 60px;\n}\n.content[data-v-0b5dcf8e] {\n  flex: 1;\n  padding: 20px;\n  overflow-y: auto;\n  margin-left: 280px;\n  margin-top: 60px;\n  transition: margin-left 0.3s ease;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -37206,6 +37213,21 @@ module.exports = function (cssWithMappingToString) {
 
 /***/ }),
 
+/***/ "./resources/images/icon.png":
+/*!***********************************!*\
+  !*** ./resources/images/icon.png ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/icon.png?4d1a5f862323d838e9c4b99e89d86fd4");
+
+/***/ }),
+
 /***/ "./resources/images/infotech.png":
 /*!***************************************!*\
   !*** ./resources/images/infotech.png ***!
@@ -37218,6 +37240,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/infotech.png?6d4d5a78c2db97d3828f2f693095fa9b");
+
+/***/ }),
+
+/***/ "./resources/images/logo_infotech.png":
+/*!********************************************!*\
+  !*** ./resources/images/logo_infotech.png ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/logo_infotech.png?3298d92f166a0fb78f23a9bed9a86572");
 
 /***/ }),
 

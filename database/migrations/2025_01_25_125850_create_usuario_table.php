@@ -14,9 +14,9 @@ class CreateUsuarioTable extends Migration
             $table->bigInteger('COD_FUNCIONARIO')->nullable();
 
             $table->string('NOME', 15);
-            $table->string('SENHA', 60);
-            $table->string('EMAIL', 255)->nullable();
-            $table->string('FOTO', 255)->nullable();
+            $table->string('SENHA', 60); // Isso precisa ser modificado no banco diretamente
+            $table->string('EMAIL', 255)->nullable(); // Isso precisa ser modificado no banco diretamente
+            $table->string('FOTO', 255)->nullable(); // Isso precisa ser modificado no banco diretamente
 
             $table->timestamps();
         });

@@ -47,10 +47,10 @@ export default {
   font-weight: 400;
   user-select: none;
 
-  margin: 0.1em 0;
-  padding: 0.4em;
+  margin: 0.5em 0;
+  padding: 8px 12px;
   border-radius: 0.25em;
-  height: 1.5em;
+  height: 2.5em;
 
   color: white;
   text-decoration: none;

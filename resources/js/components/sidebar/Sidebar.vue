@@ -1,24 +1,21 @@
 <script>
 import SidebarLink from './SidebarLink'
-import { collapsed, toggleSidebar, sidebarWidth } from './state'
+import { collapsed, toggleSidebar } from './state'
 
 export default {
   props: {},
   components: { SidebarLink },
   setup() {
-    return { collapsed, toggleSidebar, sidebarWidth }
+    return { collapsed, toggleSidebar }
   }
 }
 </script>
 
 <template>
-  <div class="sidebar" :style="{ width: sidebarWidth }">
+  <div class="sidebar" :style="{ width: collapsed ? '70px' : '280px' }">
     <h1>
-        <span v-if="collapsed">
-        <div>I</div>
-        <div>T</div>
-        </span>
-        <img v-else src="/ima" alt="Logo" />
+        <img class="img-icon" v-if="collapsed" src="../../../images/icon.png" alt="Logo" />
+        <img class="img-logo" v-else src="../../../images/logo_infotech.png" alt="Logo" />
     </h1>
 
     <SidebarLink to="/home" icon="fas fa-home">Home</SidebarLink>
@@ -63,6 +60,9 @@ export default {
 }
 
 .sidebar h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 2.5em;
 }
 
@@ -80,4 +80,25 @@ export default {
   transform: rotate(180deg);
   transition: 0.2s linear;
 }
+
+.img-logo{
+    height: 100px;
+    width: auto;
+}
+
+.img-icon {
+  height: 20px;
+  width: auto;
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 </style>

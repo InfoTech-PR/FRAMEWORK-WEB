@@ -8,7 +8,6 @@ use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -21,7 +20,7 @@ class LoginController extends Controller
             if ($usuario) {
                 if (Hash::check($credentials['SENHA'], $usuario->SENHA)) {
                     Auth::login($usuario);
-                    $token = 0; // Gerar token futuramente
+                    $token = $usuario->createToken('YourAppName')->plainTextToken;
                     return response()->json(['token' => $token]);
                 } else {
                     return response()->json(['message' => 'Usuário ou senha inválidos.'], 401);
