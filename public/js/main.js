@@ -23273,6 +23273,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
             case 5:
               response = _context.sent;
               if (response.data.data) {
+                console.log(response.data.data);
                 _this.user.name = response.data.data.NOME || 'Visitante';
                 _this.user.email = response.data.data.EMAIL || 'sem-email@exemplo.com';
                 _this.user.photoUrl = response.data.data.FOTO || '';
@@ -23622,7 +23623,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.editProfile && $options.editProfile.apply($options, arguments);
     })
   }, "Editar Perfil"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    "class": "dropdown-item",
+    "class": "dropdown-item-sair",
     href: "#",
     id: "logout",
     onClick: _cache[1] || (_cache[1] = function () {
@@ -37063,7 +37064,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.navbar-nav[data-v-6a5a106e] {\n  display: flex;\n  justify-content: flex-end;\n  width: 100%;\n}\n.navbar-nav .nav-item .nav-link[data-v-6a5a106e] {\n  font-size: 16px;\n  padding: 10px 15px;\n  color: #333;\n  transition: color 0.3s ease;\n}\n.navbar-nav .nav-item .nav-link[data-v-6a5a106e]:hover {\n  color: #2f7285;\n}\n.user-avatar[data-v-6a5a106e] {\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  -o-object-fit: cover;\n     object-fit: cover;\n  margin-right: 10px;\n}\n.dropdown-item[data-v-6a5a106e] {\n  font-size: 14px;\n  color: #555;\n  padding: 8px 20px;\n}\n.dropdown-item[data-v-6a5a106e]:hover {\n  background-color: #2f7285;\n  color: #fff;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.navbar-nav[data-v-6a5a106e] {\n  display: flex;\n  justify-content: flex-end;\n  width: 100%;\n  background-color: #f1f1f1;\n  border-radius: 10px;\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n  padding: 5px 20px;\n  transition: background-color 0.3s ease-in-out;\n}\n.navbar-nav .nav-item .nav-link[data-v-6a5a106e] {\n  font-size: 16px;\n  padding: 10px 15px;\n  color: #333;\n  transition: color 0.3s ease;\n}\n.navbar-nav .nav-item .nav-link[data-v-6a5a106e]:hover {\n  color: #2f7285;\n}\n.user-avatar[data-v-6a5a106e] {\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  -o-object-fit: cover;\n     object-fit: cover;\n  margin-right: 10px;\n}\n.dropdown-menu[data-v-6a5a106e] {\n    padding: 15px 20px;\n    right: 0 !important;\n    left: auto !important;\n    margin-right: -10px;\n}\n.dropdown-item[data-v-6a5a106e] {\n  font-size: 14px;\n  color: #555;\n  padding: 8px 20px;\n}\n.dropdown-item[data-v-6a5a106e]:hover {\n  background-color: #2f7285;\n  color: #fff;\n}\n#userEmail[data-v-6a5a106e] {\n    font-size: 12px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

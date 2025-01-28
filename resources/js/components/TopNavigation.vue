@@ -12,7 +12,7 @@
             <small id="userEmail">{{ user.email }}</small>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" id="editProfile" @click="editProfile">Editar Perfil</a>
-            <a class="dropdown-item" href="#" id="logout" @click="logout">Sair</a>
+            <a class="dropdown-item-sair" href="#" id="logout" @click="logout">Sair</a>
           </div>
         </li>
       </ul>
@@ -48,7 +48,8 @@ export default {
             },
           });
 
-          if (response.data.data) {
+            if (response.data.data) {
+            console.log(response.data.data)
             this.user.name = response.data.data.NOME || 'Visitante';
             this.user.email = response.data.data.EMAIL || 'sem-email@exemplo.com';
             this.user.photoUrl = response.data.data.FOTO || '';
@@ -78,6 +79,11 @@ export default {
   display: flex;
   justify-content: flex-end;
   width: 100%;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 5px 20px;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .navbar-nav .nav-item .nav-link {
@@ -99,6 +105,13 @@ export default {
   margin-right: 10px;
 }
 
+.dropdown-menu {
+    padding: 15px 20px;
+    right: 0 !important;
+    left: auto !important;
+    margin-right: -10px;
+}
+
 .dropdown-item {
   font-size: 14px;
   color: #555;
@@ -110,4 +123,11 @@ export default {
   color: #fff;
 }
 
+#userEmail {
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
 </style>
