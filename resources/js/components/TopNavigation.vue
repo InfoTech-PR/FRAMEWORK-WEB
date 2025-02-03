@@ -1,25 +1,3 @@
-<template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img v-if="user.photoUrl" :src="user.photoUrl" alt="Foto do usuário" class="user-avatar" />
-                <i v-else class="fas fa-user"></i>
-            </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
-            <h6 class="dropdown-header" id="userName">{{ user.name }}</h6>
-            <small id="userEmail">{{ user.email }}</small>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#" id="editProfile" @click="editProfile">Editar Perfil</a>
-            <a class="dropdown-item-sair" href="#" id="logout" @click="logout">Sair</a>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</template>
-
 <script>
 import axios from 'axios';
 
@@ -74,6 +52,28 @@ export default {
 };
 </script>
 
+<template>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img v-if="user.photoUrl" :src="user.photoUrl" alt="Foto do usuário" class="user-avatar" />
+                <i v-else class="fas fa-user"></i>
+            </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
+            <h6 class="dropdown-header" id="userName">{{ user.name }}</h6>
+            <small id="userEmail">{{ user.email }}</small>
+            <div class="dropdown-divider"></div>
+            <a class="btn-edit" href="#" id="editProfile" @click="editProfile">Editar Perfil</a>
+            <a class="btn-exit" href="#" id="logout" @click="logout">Sair</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</template>
+
 <style scoped>
 .navbar-nav {
   display: flex;
@@ -112,22 +112,42 @@ export default {
     margin-right: -10px;
 }
 
-.dropdown-item {
-  font-size: 14px;
-  color: #555;
-  padding: 8px 20px;
-}
-
-.dropdown-item:hover {
-  background-color: #2f7285;
-  color: #fff;
-}
-
 #userEmail {
     font-size: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+}
+.btn-edit, .btn-exit {
+  display: block;
+  width: 100%;
+  padding: 8px 0;
+  text-align: center;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  margin: 5px 0;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-edit {
+  background-color: #2f7285;
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #1e4f56;
+}
+
+.btn-exit {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-exit:hover {
+  background-color: #c0392b;
 }
 </style>
