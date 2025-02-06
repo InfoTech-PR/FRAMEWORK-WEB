@@ -1,17 +1,12 @@
 export default [
   {
-    title: 'O.S. X Clientes',
-    icon: { icon: 'tabler-chart-bar-popular' },
-    to: 'dashboards-os-clientes',
+    title: 'Projetos',
+    icon: { icon: 'tabler-device-laptop' },
+    to: 'dashboards-faturamento-geral', //mudar rota futuramente
   },
   {
-    title: 'NFS X Clientes',
-    icon: { icon: 'tabler-chart-bar-popular' },
-    to: 'dashboards-nfs-clientes',
-  },
-  {
-    title: 'Faturamento Geral',
-    icon: { icon: 'tabler-coin' },
-    to: 'dashboards-faturamento-geral',
+    title: 'Controle de Versões / Correções',
+    icon: { icon: 'tabler-shield-check' },
+    to: 'dashboards-nfs-clientes', //mudar rota futuramente
   },
 ]

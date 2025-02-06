@@ -1,10 +1,6 @@
 <script setup>
 import { layoutConfig } from '@layouts'
-import {
-  VerticalNavGroup,
-  VerticalNavLink,
-  VerticalNavSectionTitle,
-} from '@layouts/components'
+import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 import { injectionKeyIsVerticalNavHovered } from '@layouts/symbols'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
@@ -32,37 +28,27 @@ const props = defineProps({
 
 const refNav = ref()
 const isHovered = useElementHover(refNav)
-
-provide(injectionKeyIsVerticalNavHovered, isHovered)
-
 const configStore = useLayoutConfigStore()
+const route = useRoute()
+const isVerticalNavScrolled = ref(false)
+const updateIsVerticalNavScrolled = val => isVerticalNavScrolled.value = val
+const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
+
+const handleNavScroll = evt => {
+  isVerticalNavScrolled.value = evt.target.scrollTop > 0
+}
 
 const resolveNavItemComponent = item => {
   if ('heading' in item)
     return VerticalNavSectionTitle
   if ('children' in item)
     return VerticalNavGroup
-  
   return VerticalNavLink
 }
-
-/*ℹ️ Close overlay side when route is changed
-Close overlay vertical nav when link is clicked
-*/
-const route = useRoute()
-
+provide(injectionKeyIsVerticalNavHovered, isHovered)
 watch(() => route.name, () => {
   props.toggleIsOverlayNavActive(false)
 })
-
-const isVerticalNavScrolled = ref(false)
-const updateIsVerticalNavScrolled = val => isVerticalNavScrolled.value = val
-
-const handleNavScroll = evt => {
-  isVerticalNavScrolled.value = evt.target.scrollTop > 0
-}
-
-const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
 </script>
 
 <template>
@@ -79,7 +65,6 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
       },
     ]"
   >
-    <!-- 👉 Header -->
     <div class="nav-header">
       <slot name="nav-header">
         <RouterLink
@@ -88,8 +73,6 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
         >
           <VNodeRenderer :nodes="layoutConfig.app.logo" />
         </RouterLink>
-        <!-- 👉 Vertical nav actions -->
-        <!-- Show toggle collapsible in >md and close button in <md -->
         <div class="header-action">
           <Component
             :is="layoutConfig.app.iconRenderer || 'div'"
@@ -162,7 +145,6 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
 @use "@configured-variables" as variables;
 @use "@layouts/styles/mixins";
 
-// 👉 Vertical Nav
 .layout-vertical-nav {
   position: fixed;
   z-index: variables.$layout-vertical-nav-z-index;
@@ -199,12 +181,6 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
 
   .nav-items {
     block-size: 100%;
-
-    // ℹ️ We no loner needs this overflow styles as perfect scrollbar applies it
-    // overflow-x: hidden;
-
-    // // ℹ️ We used `overflow-y` instead of `overflow` to mitigate overflow x. Revert back if any issue found.
-    // overflow-y: auto;
   }
 
   .nav-item-title {
@@ -214,7 +190,6 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
     white-space: nowrap;
   }
 
-  // 👉 Collapsed
   .layout-vertical-nav-collapsed & {
     &:not(.hovered) {
       inline-size: variables.$layout-vertical-nav-collapsed-width;
@@ -222,7 +197,6 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
   }
 }
 
-// Small screen vertical nav transition
 @media (max-width: 1279px) {
   .layout-vertical-nav {
     &:not(.visible) {
@@ -232,7 +206,6 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
         transform: translateX(variables.$layout-vertical-nav-width);
       }
     }
-
     transition: transform 0.25s ease-in-out;
   }
 }

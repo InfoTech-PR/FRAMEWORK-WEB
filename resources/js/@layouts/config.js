@@ -1,4 +1,4 @@
-import logo from '@/assets/infotech500x500.png'
+import logo from '@/assets/infotech250x250.png'
 import { AppContentLayoutNav, ContentWidth, FooterType, HorizontalNavType, NavbarType } from '@layouts/enums'
 import { breakpointsVuetify } from '@vueuse/core'
 
