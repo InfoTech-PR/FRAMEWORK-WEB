@@ -2,6 +2,7 @@
 import { VForm } from 'vuetify/components/VForm'
 
 const isPasswordVisible = ref(false)
+const isLoading = ref(false)
 const route = useRoute()
 const router = useRouter()
 const ability = useAbility()
@@ -17,17 +18,13 @@ definePage({
   },
 })
 
-const errors = ref({
-  NOME: undefined,
-  SENHA: undefined,
-})
-
 const credentials = ref({
   NOME: '',
   SENHA: '',
 })
 
 const login = async () => {
+  isLoading.value = true
   try {
     const res = await $api('/auth/login', {
       method: 'POST',
@@ -59,6 +56,8 @@ const login = async () => {
       errorMessage.value = err?.response?.data?.message || 'Erro desconhecido';
     }
     error.value = true;  
+  } finally {
+    isLoading.value = false 
   }
 };
 
@@ -67,6 +66,16 @@ const onSubmit = () => {
     if (isValid)
       login()
   })
+}
+
+const isFormValid = computed(() => {
+  return credentials.value.NOME.trim() !== '' && credentials.value.SENHA.trim() !== ''
+})
+
+const closeAndReset = () => {
+  credentials.value.NOME = '';
+  credentials.value.SENHA = '';
+  error.value = false; 
 }
 </script>
 
@@ -98,26 +107,25 @@ const onSubmit = () => {
                   v-model="credentials.NOME"
                   label="Usuário"
                   type="text"
-                  autofocus
-                  :rules="[requiredValidator]"
-                  :error-messages="errors.NOME"
                 />
               </VCol>
               <VCol cols="12">
                 <AppTextField
                   v-model="credentials.SENHA"
                   label="Senha"
-                  :rules="[requiredValidator]"
-                  :type="isPasswordVisible ? 'text' : 'SENHA'"
-                  :error-messages="errors.SENHA"
+                  :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
               </VCol>
-
               <VCol cols="12">
-                <VBtn block type="submit" class="mt-5">
-                  Login
+                <VBtn block type="submit" class="mt-5" :disabled="!isFormValid || isLoading">
+                  <template v-if="isLoading">
+                    <VProgressCircular indeterminate color="white" size="24" />
+                  </template>
+                  <template v-else>
+                    Login
+                  </template>
                 </VBtn>
               </VCol>
             </VRow>
@@ -127,17 +135,15 @@ const onSubmit = () => {
     </VCol>
   </VRow>
 
-  <VDialog v-model="error" max-width="400px">
+  <VDialog v-model="error" max-width="400px" @click:outside="closeAndReset">
     <template #default="{ close }">
       <VCard>
         <VCardText class="text-center">
           <h4 class="mb-2">
             Opa, Houve um Problema!
           </h4>
-
-
           <p>{{ errorMessage }}</p>
-          <VBtn color="primary" @click="error = false">
+          <VBtn color="primary" @click="closeAndReset">
             Fechar
           </VBtn>
         </VCardText>
