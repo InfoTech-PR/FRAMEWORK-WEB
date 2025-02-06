@@ -1,158 +1,151 @@
-<template>
-  <div class="login-page d-flex flex-column min-vh-100 bg-light">
-    <div class="row no-gutters">
-      <div class="col-md-6 image-section">
-        <img src="../../images/infotech.png" alt="Imagem da InfoTech" class="img-fluid w-100" />
-      </div>
+<script setup>
+import { VForm } from 'vuetify/components/VForm'
 
-      <div class="col-md-6 form-section p-4 d-flex justify-content-center align-items-center">
-        <div class="login-container w-100">
-          <form @submit.prevent="submitLogin">
-            <div class="form-group mb-4">
-              <label for="name" class="text-light">Usuário</label>
-              <input type="text" id="name" v-model="name" class="form-control" required placeholder="Digite seu usuário" />
-            </div>
+const isPasswordVisible = ref(false)
+const route = useRoute()
+const router = useRouter()
+const ability = useAbility()
+const refVForm = ref()
+const error = ref(false) 
+const errorMessage = ref('') 
+const modalOpen = ref(true)
 
-            <div class="form-group mb-4">
-              <label for="password" class="text-light">Senha</label>
-              <div class="input-group">
-                <input v-if="showPassword" type="text" id="password" v-model="password" class="form-control" required placeholder="Digite sua senha" />
-                <input v-else type="password" id="password" v-model="password" class="form-control" required placeholder="Digite sua senha" />
-                <div class="input-group-append">
-                  <button type="button" class="btn btn-outline-secondary" @click="toggleShowPassword">
-                    <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <button type="submit" :disabled="!name || !password || isLoading" class="btn btn-primary w-100">
-              <span v-if="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              <span v-else>Login</span>
-            </button>
-          </form>
-
-          <div v-if="error" class="error-modal mt-4">
-            <div class="modal-content p-4 text-center">
-              <p>{{ errorMessage }}</p>
-              <button @click="closeErrorModal" class="btn btn-secondary">Fechar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script>
-import axios from 'axios';
-
-export default {
-  data() {
-    return {
-      name: "",
-      password: "",
-      showPassword: false,
-      isLoading: false,
-      error: false,
-      errorMessage: "",
-    };
+definePage({
+  meta: {
+    layout: 'blank',
+    unauthenticatedOnly: true,
   },
-  methods: {
-    toggleShowPassword() {
-      this.showPassword = !this.showPassword;
-    },
-    async submitLogin() {
-        this.isLoading = true;
-        try {
-            const response = await axios.post("http://127.0.0.1:8000/api/login", {
-                NOME: this.name,
-                SENHA: this.password,
-            });
+})
 
-            if (response.status === 200) {
-                const token = response.data.token;
-                localStorage.setItem('token', token);
-                this.$router.push('/home');
-            }
-        } catch (error) {
-            this.isLoading = false;
+const errors = ref({
+  NOME: undefined,
+  SENHA: undefined,
+})
 
-            if (error.response) {
-                if (error.response.status === 401) {
-                    this.errorMessage = "Credenciais inválidas! Por favor, tente novamente.";
-                } else {
-                    this.errorMessage = error.response.data.message || "Erro no servidor!";
-                }
-            } else {
-                this.errorMessage = "Erro de rede. Verifique sua conexão.";
-            }
+const credentials = ref({
+  NOME: '',
+  SENHA: '',
+})
 
-            this.error = true;
-        }
+const login = async () => {
+  try {
+    const res = await $api('/auth/login', {
+      method: 'POST',
+      body: {
+        NOME: credentials.value.NOME,
+        SENHA: credentials.value.SENHA,
+      },
+    });
+
+    if (res?.token && res?.userAbilityRules && res?.userData) {
+      const userAbilityRules = res.userAbilityRules;
+      const userData = res.userData;
+      useCookie('accessToken').value = res.token;
+      useCookie('userAbilityRules').value = userAbilityRules;
+      useCookie('userData').value = userData;
+      ability.update(userAbilityRules);
+
+      await nextTick(() => {
+        router.replace(route.query.to ? String(route.query.to) : '/');
+      });
+    } else {
+      errorMessage.value = res?.message || 'Usuário ou senha inválidos!';
+      error.value = true;
     }
-,
-    closeErrorModal() {
-      this.error = false;
-      this.errorMessage = "";
-    },
-  },
+  } catch (err) {
+    if (err.response?.status === 401) {
+      errorMessage.value = 'Usuário ou senha inválidos!';
+    } else {
+      errorMessage.value = err?.response?.data?.message || 'Erro desconhecido';
+    }
+    error.value = true;  
+  }
 };
+
+const onSubmit = () => {
+  refVForm.value?.validate().then(({ valid: isValid }) => {
+    if (isValid)
+      login()
+  })
+}
 </script>
 
-<style scoped>
-.login-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+<template>
+  <VRow no-gutters class="auth-wrapper bg-surface">
+    <VCol md="8" class="d-none d-md-flex">
+      <div class="position-relative bg-background w-100 me-0">
+        <div class="d-flex align-center justify-center w-100 h-100" style="padding-inline: 6.25rem">
+          <img src="@/assets/infotech500x500.png" alt="Logotipo LAP" class="auth-illustration mt-16 mb-2">
+        </div>
+      </div>
+    </VCol>
 
-.image-section img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    <VCol cols="12" md="4" class="auth-card-v2 d-flex align-center justify-center">
+      <VCard flat :max-width="500" class="mt-12 mt-sm-0 pa-4">
+        <VCardText>
+          <h4 class="text-h4 mb-1">
+            Bem-vindo ao Framework da InfoTech!
+          </h4>
+          <p class="mb-0">
+            Faça o login para acessar a plataforma!
+          </p>
+        </VCardText>
+        <VCardText>
+          <VForm ref="refVForm" @submit.prevent="onSubmit">
+            <VRow>
+              <VCol cols="12">
+                <AppTextField
+                  v-model="credentials.NOME"
+                  label="Usuário"
+                  type="text"
+                  autofocus
+                  :rules="[requiredValidator]"
+                  :error-messages="errors.NOME"
+                />
+              </VCol>
+              <VCol cols="12">
+                <AppTextField
+                  v-model="credentials.SENHA"
+                  label="Senha"
+                  :rules="[requiredValidator]"
+                  :type="isPasswordVisible ? 'text' : 'SENHA'"
+                  :error-messages="errors.SENHA"
+                  :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
+                  @click:append-inner="isPasswordVisible = !isPasswordVisible"
+                />
+              </VCol>
 
-.form-section {
-  display: flex;
-  justify-content: center;
-  background-color: rgb(71, 99, 108);
-  align-items: center;
-}
+              <VCol cols="12">
+                <VBtn block type="submit" class="mt-5">
+                  Login
+                </VBtn>
+              </VCol>
+            </VRow>
+          </VForm>
+        </VCardText>
+      </VCard>
+    </VCol>
+  </VRow>
 
-.login-container {
-  max-width: 400px;
-  width: 100%;
-}
+  <VDialog v-model="error" max-width="400px">
+    <template #default="{ close }">
+      <VCard>
+        <VCardText class="text-center">
+          <h4 class="mb-2">
+            Opa, Houve um Problema!
+          </h4>
 
-.error-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  border-radius: 8px;
-  padding: 15px;
-  z-index: 1050;
-  max-width: 80%;
-  width: 400px;
-}
 
-button.btn {
-  font-size: 16px;
-}
+          <p>{{ errorMessage }}</p>
+          <VBtn color="primary" @click="error = false">
+            Fechar
+          </VBtn>
+        </VCardText>
+      </VCard>
+    </template>
+  </VDialog>
+</template>
 
-.form-group {
-  margin-bottom: 20px;
-}
-
-.input-group-append button {
-  background-color: white;
-  cursor: pointer;
-  border: 1px solid #d9dde1;
-  border-left: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
+<style lang="scss">
+@use "@core-scss/template/pages/page-auth"
 </style>
