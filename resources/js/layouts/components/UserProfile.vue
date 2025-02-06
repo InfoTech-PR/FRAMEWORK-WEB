@@ -3,44 +3,39 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 
 const router = useRouter()
 const ability = useAbility()
-
-// TODO: Get type from backend
 const userData = useCookie('userData')
 
 const logout = async () => {
-
-  // Remove "accessToken" from cookie
   useCookie('accessToken').value = null
-
-  // Remove "userData" from cookie
-  userData.value = null
-
-  // Redirect to login page
-  await router.push('/login')
-
-  // ℹ️ We had to remove abilities in then block because if we don't nav menu items mutation is visible while redirecting user to login page
-
-  // Remove "userAbilities" from cookie
   useCookie('userAbilityRules').value = null
-
-  // Reset ability to initial ability
+  userData.value = null
   ability.update([])
+  await router.push('/login')
 }
 </script>
 
 <template>
   <h4 class="mx-2">
-    {{ userData }}
+    {{ userData.nome || 'Usuario' }}
   </h4>
+
   <VAvatar
     size="38"
     class="cursor-pointer"
     :color="!(userData && userData.avatar) ? 'primary' : undefined"
     :variant="!(userData && userData.avatar) ? 'tonal' : undefined"
   >
-    <VIcon icon="tabler-user" />
+    <template v-if="userData && userData.avatar">
+      <img
+        :src="userData.avatar"
+        alt="User Avatar"
+        class="avatar-image"
+      />
+    </template>
+    <template v-else>
+      <VIcon icon="tabler-user" />
+    </template>
 
-    <!-- SECTION Menu -->
     <VMenu
       activator="parent"
       width="240"
@@ -50,18 +45,9 @@ const logout = async () => {
       <VList>
         <VListItem>
           <div class="d-flex gap-2 align-center">
-            <VListItemAction>
-              <VAvatar
-                :color="!(userData && userData.avatar) ? 'primary' : undefined"
-                :variant="!(userData && userData.avatar) ? 'tonal' : undefined"
-              >
-                <VIcon icon="tabler-user" />
-              </VAvatar>
-            </VListItemAction>
-
-            <div>
+            <div class="email-container">
               <h6 class="text-h6 font-weight-medium">
-                {{ userData }}
+                {{ userData?.email || 'Email não disponível' }}
               </h6>
             </div>
           </div>
@@ -82,6 +68,21 @@ const logout = async () => {
         </PerfectScrollbar>
       </VList>
     </VMenu>
-    <!-- !SECTION -->
   </VAvatar>
 </template>
+
+<style scoped>
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Garante que a imagem ocupe todo o espaço sem distorcer */
+  border-radius: 50%; /* Mantém o formato circular */
+}
+
+.email-container h6 {
+  white-space: nowrap; /* Evita que o email seja quebrado em várias linhas */
+  overflow: hidden; /* Esconde qualquer parte do texto que ultrapasse o limite */
+  text-overflow: ellipsis; /* Exibe "..." se o texto for muito longo */
+  max-width: 150px; /* Limita a largura do email para evitar que ocupe muito espaço */
+}
+</style>

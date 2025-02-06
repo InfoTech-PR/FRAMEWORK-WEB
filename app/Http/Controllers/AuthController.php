@@ -30,6 +30,8 @@ class AuthController extends Controller
                         'token' => $token,
                         'userData' => $usuario->NOME,
                         'userAbilityRules' => 'admin',
+                        'userEmail' => $usuario->EMAIL,
+                        'userProfile' => $usuario->FOTO
                     ]);
                 } else {
                     return response()->json(['message' => 'Usuário ou senha inválidos.'], 401);

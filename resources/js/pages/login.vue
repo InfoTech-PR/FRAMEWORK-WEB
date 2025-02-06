@@ -9,7 +9,6 @@ const ability = useAbility()
 const refVForm = ref()
 const error = ref(false) 
 const errorMessage = ref('') 
-const modalOpen = ref(true)
 
 definePage({
   meta: {
@@ -33,10 +32,13 @@ const login = async () => {
         SENHA: credentials.value.SENHA,
       },
     });
-
     if (res?.token && res?.userAbilityRules && res?.userData) {
       const userAbilityRules = res.userAbilityRules;
-      const userData = res.userData;
+      const userData = {
+        nome: res.userData, 
+        email: res.userEmail, 
+        avatar: res.userProfile,
+      };
       useCookie('accessToken').value = res.token;
       useCookie('userAbilityRules').value = userAbilityRules;
       useCookie('userData').value = userData;
