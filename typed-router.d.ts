@@ -77,6 +77,7 @@ declare module 'vue-router/auto-routes' {
     'dashboards-ordem-servico': RouteRecordInfo<'dashboards-ordem-servico', '/dashboards/ordem-servico', Record<never, never>, Record<never, never>>,
     'dashboards-os-clientes': RouteRecordInfo<'dashboards-os-clientes', '/dashboards/os-clientes', Record<never, never>, Record<never, never>>,
     'dashboards-cadastro-projetos': RouteRecordInfo<'dashboards-cadastro-projetos', '/dashboards/cadastro-projetos', Record<never, never>, Record<never, never>>,
+    'dashboards-consulta-projetos': RouteRecordInfo<'dashboards-consulta-projetos', '/dashboards/consulta-projetos', Record<never, never>, Record<never, never>>,
 
     'extensions-swiper': RouteRecordInfo<'extensions-swiper', '/extensions/swiper', Record<never, never>, Record<never, never>>,
     'extensions-tour': RouteRecordInfo<'extensions-tour', '/extensions/tour', Record<never, never>, Record<never, never>>,

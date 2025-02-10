@@ -29,4 +29,9 @@ export const routes = [
     name: 'cadastro-projetos',
     component: () => import('@/pages/dashboards/cadastro-projetos.vue'),
   },
+  {
+    path: '/dashboards/consulta-projetos',
+    name: 'consulta-projetos',
+    component: () => import('@/pages/dashboards/consulta-projetos.vue'),
+  },
 ]
