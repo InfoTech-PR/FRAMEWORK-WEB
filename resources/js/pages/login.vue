@@ -7,8 +7,8 @@ const route = useRoute()
 const router = useRouter()
 const ability = useAbility()
 const refVForm = ref()
-const error = ref(false) 
-const errorMessage = ref('') 
+const error = ref(false)
+const errorMessage = ref('')
 
 definePage({
   meta: {
@@ -35,8 +35,8 @@ const login = async () => {
     if (res?.token && res?.userAbilityRules && res?.userData) {
       const userAbilityRules = res.userAbilityRules;
       const userData = {
-        nome: res.userData, 
-        email: res.userEmail, 
+        nome: res.userData,
+        email: res.userEmail,
         avatar: res.userProfile,
       };
       useCookie('accessToken').value = res.token;
@@ -57,9 +57,9 @@ const login = async () => {
     } else {
       errorMessage.value = err?.response?.data?.message || 'Erro desconhecido';
     }
-    error.value = true;  
+    error.value = true;
   } finally {
-    isLoading.value = false 
+    isLoading.value = false
   }
 };
 
@@ -77,7 +77,7 @@ const isFormValid = computed(() => {
 const closeAndReset = () => {
   credentials.value.NOME = '';
   credentials.value.SENHA = '';
-  error.value = false; 
+  error.value = false;
 }
 </script>
 
@@ -105,20 +105,12 @@ const closeAndReset = () => {
           <VForm ref="refVForm" @submit.prevent="onSubmit">
             <VRow>
               <VCol cols="12">
-                <AppTextField
-                  v-model="credentials.NOME"
-                  label="Usuário"
-                  type="text"
-                />
+                <AppTextField v-model="credentials.NOME" label="Usuário" type="text" />
               </VCol>
               <VCol cols="12">
-                <AppTextField
-                  v-model="credentials.SENHA"
-                  label="Senha"
-                  :type="isPasswordVisible ? 'text' : 'password'"
+                <AppTextField v-model="credentials.SENHA" label="Senha" :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
-                  @click:append-inner="isPasswordVisible = !isPasswordVisible"
-                />
+                  @click:append-inner="isPasswordVisible = !isPasswordVisible" />
               </VCol>
               <VCol cols="12">
                 <VBtn block type="submit" class="mt-5" :disabled="!isFormValid || isLoading">
