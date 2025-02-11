@@ -23,13 +23,5 @@ Route::get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'dashboards'], function () {
   Route::get('clientes-os', [DashboardController::class, 'clientes_os']);
-  Route::get('os-cliente/{id}', [DashboardController::class, 'os_cliente']);
-  Route::get('os-detail/{id}', [DashboardController::class, 'os_detail']);
-  Route::post('clientes-os-date', [DashboardController::class, 'clientes_os_date']);
-  Route::post('os-cliente/{id}/filter', [DashboardController::class, 'os_cliente_filter']);
-  Route::get('clientes-nfs', [NFSDashboardController::class, 'clientes_nfs']);
-  Route::post('clientes-nfs-date', [NFSDashboardController::class, 'clientes_nfs_date']);
-  Route::get('nfs-cliente/{id}', [NFSDashboardController::class, 'nfs_cliente']);
-  Route::get('nfs-detail/{id}', [NFSDashboardController::class, 'nfs_detail']);
-  Route::get('faturamento-geral', [FatDashboardController::class, 'faturamento_geral']);
+  
 });
