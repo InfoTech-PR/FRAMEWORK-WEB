@@ -17,14 +17,17 @@ export default {
         dataFinal: ''
       },
       clientes: [],
-      status: ['Em andamento', 'Concluído', 'Pendente'],
+      status: ['Em Desenvolvimento', 'Fase Inicial',
+        'Estável, com necessidade de alterações', 'Estável, sem necessidade de alterações',
+        'Inutilizado', 'Abandonado', 'Cancelado'],
       analistas: ['Analista 1', 'Analista 2', 'Analista 3'],
-      programadores: ['Programador 1', 'Programador 2', 'Programador 3'],
+      programadores: [],
       isLoading: false,
     };
   },
   created() {
     this.fetchClientes();
+    this.fetchFuncionarios();
   },
   methods: {
     async fetchClientes() {
@@ -34,6 +37,17 @@ export default {
         this.clientes = response.data.map(cliente => cliente.nome);
       } catch (error) {
         console.error("Erro ao buscar clientes:", error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async fetchFuncionarios() {
+      this.isLoading = true;
+      try {
+        const response = await axios.get('/api/funcionarios');
+        this.programadores = response.data.map(programador => programador.nome);
+      } catch (error) {
+        console.error("Erro ao buscar funcionarios:", error);
       } finally {
         this.isLoading = false;
       }
@@ -99,7 +113,10 @@ export default {
               <v-select label="Analista" v-model="form.analista" :items="analistas"></v-select>
             </v-col>
             <v-col cols="6">
-              <v-select label="Programador" v-model="form.programador" :items="programadores"></v-select>
+              <v-select v-if="programadores.length > 0" label="Programador" v-model="form.programador"
+                :items="programadores" :loading="isLoading" item-text="nome" item-value="nome"
+                :placeholder="isLoading ? 'Carregando...' : 'Selecione um Programador'">
+              </v-select>
             </v-col>
           </v-row>
 

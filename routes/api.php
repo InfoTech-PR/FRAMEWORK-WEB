@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\FuncionarioController;
 use App\Http\Resources\UsuarioResource;
 
 Route::post('auth/login', [AuthController::class, 'login']);
@@ -24,3 +25,4 @@ Route::group(['prefix' => 'dashboards'], function () {
 });
 
 Route::get('/clientes', [ClienteController::class, 'index']);
+Route::get('/funcionarios', [FuncionarioController::class, 'index']);
