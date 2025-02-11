@@ -1,7 +1,10 @@
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
+      tab: 0,
       form: {
         nomeProjeto: '',
         cliente: '',
@@ -13,14 +16,28 @@ export default {
         dataInicial: '',
         dataFinal: ''
       },
-      clientes: ['Empresa A', 'Empresa B', 'Empresa C'],
+      clientes: [],
       status: ['Em andamento', 'Concluído', 'Pendente'],
       analistas: ['Analista 1', 'Analista 2', 'Analista 3'],
       programadores: ['Programador 1', 'Programador 2', 'Programador 3'],
       isLoading: false,
     };
   },
+  created() {
+    this.fetchClientes();
+  },
   methods: {
+    async fetchClientes() {
+      this.isLoading = true;
+      try {
+        const response = await axios.get('/api/clientes');
+        this.clientes = response.data.map(cliente => cliente.nome);
+      } catch (error) {
+        console.error("Erro ao buscar clientes:", error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
     cancelar() {
       this.$refs.form.reset();
     },
@@ -61,7 +78,10 @@ export default {
                 :rules="[v => !!v || 'Campo obrigatório']" required></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-select label="Cliente" v-model="form.cliente" :items="clientes"></v-select>
+              <v-select v-if="clientes.length > 0" label="Cliente" v-model="form.cliente" :items="clientes"
+                :loading="isLoading" item-text="nome" item-value="nome"
+                :placeholder="isLoading ? 'Carregando...' : 'Selecione um cliente'">
+              </v-select>
             </v-col>
           </v-row>
 

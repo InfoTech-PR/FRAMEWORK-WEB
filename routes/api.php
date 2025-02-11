@@ -2,10 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\NFSDashboardController;
-use App\Http\Controllers\FatDashboardController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Resources\UsuarioResource;
 
 Route::post('auth/login', [AuthController::class, 'login']);
@@ -22,6 +20,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::group(['prefix' => 'dashboards'], function () {
-  Route::get('clientes-os', [DashboardController::class, 'clientes_os']);
-  
+  //O que inserir aqui exatamente?
 });
+
+Route::get('/clientes', [ClienteController::class, 'index']);

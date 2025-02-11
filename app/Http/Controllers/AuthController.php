@@ -9,10 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Controller;
 
-class AuthController extends Controller
-{
-    public function login(Request $request)
-    {
+class AuthController extends Controller {
+    public function login(Request $request) {
         $request->validate([
             'NOME' => 'required|string',
             'SENHA' => 'required|string',
@@ -46,8 +44,7 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request)
-    {
+    public function logout(Request $request) {
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Desconectado com sucesso.']);
     }

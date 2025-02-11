@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Cliente extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'nome',
+        'nome_fantasia',
+        'cod_tipo_pessoa',
+        'endereco',
+        'complemento',
+        'cod_bairro',
+        'cod_cidade',
+        'cod_uf',
+        'cod_pais',
+        'cep',
+        'fone1',
+        'fone2',
+        'ramal1',
+        'ramal2',
+        'tel0800',
+        'contato1',
+        'contato2',
+        'celular1',
+        'celular2',
+        'email',
+        'cpf_cnpj',
+        'insc_estadual',
+        'obs',
+        'email2',
+        'numero',
+        'sala_loja',
+        'home_page',
+        'ddd',
+        'ddi',
+        'data_cadastro',
+        'data_alteracao',
+        'servicos',
+        'n_atendimentos',
+        'cod_funcionario',
+        'imprimir',
+        'foto',
+        'flag_contato',
+        'data_nasc',
+        'tipo_cliente',
+        'limite_credito',
+        'mes_aniversario',
+        'data_ultima_compra',
+        'data_ultimo_servico',
+        'restricao_interna',
+        'num_ocorrencias',
+        'num_ocorrencias_pend',
+        'notif_cliente',
+        'ultimo_contato',
+        'cod_alternativo',
+        'controla_fidelidade',
+        'motivo_restricao',
+        'total_pontos',
+        'total_credito',
+        'lista_negra',
+        'motivo_lista_negra_exclusao',
+        'data_ult_contato',
+        'cod_status_transmissao',
+        'suporte_bloqueado',
+        'cod_categoria_cliente',
+        'codigo_anterior',
+        'integrado_boleto',
+        'id_cli_plataforma',
+        'senha',
+        'usuario',
+    ];
+}
