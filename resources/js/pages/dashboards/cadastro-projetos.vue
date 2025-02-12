@@ -1,3 +1,10 @@
+<!-- 
+ 
+  1. DatePicker não funciona
+  2. Confirmar antes de sair da tela não funciona
+  3. 
+
+-->
 <script>
 import axios from 'axios';
 
@@ -20,7 +27,7 @@ export default {
       status: ['Em Desenvolvimento', 'Fase Inicial',
         'Estável, com necessidade de alterações', 'Estável, sem necessidade de alterações',
         'Inutilizado', 'Abandonado', 'Cancelado'],
-      analistas: ['Analista 1', 'Analista 2', 'Analista 3'],
+      analistas: [],
       programadores: [],
       isLoading: false,
     };
@@ -28,6 +35,9 @@ export default {
   created() {
     this.fetchClientes();
     this.fetchFuncionarios();
+
+    const today = new Date().toISOString().substr(0, 10);
+    this.form.dataInicial = today;
   },
   methods: {
     async fetchClientes() {
@@ -46,23 +56,35 @@ export default {
       try {
         const response = await axios.get('/api/funcionarios');
         this.programadores = response.data.map(programador => programador.nome);
+        this.analistas = response.data.map(analista => analista.nome);
       } catch (error) {
         console.error("Erro ao buscar funcionarios:", error);
       } finally {
         this.isLoading = false;
       }
     },
+    async cadastrar() {
+      this.isLoading = true;
+      try {
+        const response = await axios.post('/api/cadastrarProjeto', this.form);
+        if (response.data.success) {
+          this.$refs.form.reset();
+          this.initialFormState = { ...this.form };
+          alert('Cadastro realizado!');
+        } else {
+          alert('Erro ao realizar cadastro. Tente novamente.');
+        }
+      } catch (error) {
+        console.error('Erro ao cadastrar:', error);
+        alert('Erro ao realizar cadastro. Tente novamente.');
+      } finally {
+        this.isLoading = false;
+      }
+    },
     cancelar() {
       this.$refs.form.reset();
+      this.initialFormState = { ...this.form };
     },
-    cadastrar() {
-      this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false;
-        this.$refs.form.reset();
-        alert('Cadastro realizado!');
-      }, 2000);
-    }
   }
 }
 </script>
@@ -110,12 +132,15 @@ export default {
 
           <v-row>
             <v-col cols="6">
-              <v-select label="Analista" v-model="form.analista" :items="analistas"></v-select>
-            </v-col>
-            <v-col cols="6">
               <v-select v-if="programadores.length > 0" label="Programador" v-model="form.programador"
                 :items="programadores" :loading="isLoading" item-text="nome" item-value="nome"
                 :placeholder="isLoading ? 'Carregando...' : 'Selecione um Programador'">
+              </v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-select v-if="analistas.length > 0" label="Analista" v-model="form.analista" :items="analistas"
+                :loading="isLoading" item-text="nome" item-value="nome"
+                :placeholder="isLoading ? 'Carregando...' : 'Selecione um Analista'">
               </v-select>
             </v-col>
           </v-row>
@@ -152,7 +177,7 @@ export default {
                 <template v-else>
                   Cadastrar
                 </template>
-              </V-btn>
+              </v-btn>
             </v-col>
           </v-row>
         </v-form>

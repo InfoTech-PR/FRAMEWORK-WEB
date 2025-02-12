@@ -12,24 +12,24 @@ use App\Http\Controllers\Controller;
 class AuthController extends Controller {
     public function login(Request $request) {
         $request->validate([
-            'NOME' => 'required|string',
-            'SENHA' => 'required|string',
+            'name' => 'required|string',
+            'password' => 'required|string',
         ]);
-        $credentials = $request->only('NOME', 'SENHA');
+        $credentials = $request->only('name', 'password');
 
         try {
-            $usuario = Usuario::where('NOME', $credentials['NOME'])->first();
+            $usuario = Usuario::where('name', $credentials['name'])->first();
             if ($usuario) {
-                if (Hash::check($credentials['SENHA'], $usuario->SENHA)) {
+                if (Hash::check($credentials['password'], $usuario->password)) {
                     Auth::login($usuario);
                     $token = $usuario->createToken('YourAppName')->plainTextToken;
 
                     return response()->json([
                         'token' => $token,
-                        'userData' => $usuario->NOME,
+                        'userData' => $usuario->name,
                         'userAbilityRules' => 'admin',
-                        'userEmail' => $usuario->EMAIL,
-                        'userProfile' => $usuario->FOTO
+                        'userEmail' => $usuario->email,
+                        'userProfile' => $usuario->imageProfile
                     ]);
                 } else {
                     return response()->json(['message' => 'Usuário ou senha inválidos.'], 401);

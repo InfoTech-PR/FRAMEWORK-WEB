@@ -55,21 +55,10 @@ const jumpToDateFn = date => {
       <!-- `z-index: 0` Allows overlapping vertical nav on calendar -->
       <VLayout style="z-index: 0;">
         <!-- 👉 Navigation drawer -->
-        <VNavigationDrawer
-          v-model="isLeftSidebarOpen"
-          width="292"
-          absolute
-          touchless
-          location="start"
-          class="calendar-add-event-drawer"
-          :temporary="$vuetify.display.mdAndDown"
-        >
+        <VNavigationDrawer v-model="isLeftSidebarOpen" width="292" absolute touchless location="start"
+          class="calendar-add-event-drawer" :temporary="$vuetify.display.mdAndDown">
           <div style="margin: 1.5rem;">
-            <VBtn
-              block
-              prepend-icon="tabler-plus"
-              @click="isEventHandlerSidebarActive = true"
-            >
+            <VBtn block prepend-icon="tabler-plus" @click="isEventHandlerSidebarActive = true">
               Add event
             </VBtn>
           </div>
@@ -77,12 +66,8 @@ const jumpToDateFn = date => {
           <VDivider />
 
           <div class="d-flex align-center justify-center pa-2">
-            <AppDateTimePicker
-              :model-value="new Date().toJSON().slice(0, 10)"
-              :config="{ inline: true }"
-              class="calendar-date-picker"
-              @update:model-value="jumpToDateFn"
-            />
+            <AppDateTimePicker :model-value="new Date().toJSON().slice(0, 10)" :config="{ inline: true }"
+              class="calendar-date-picker" @update:model-value="jumpToDateFn" />
           </div>
 
           <VDivider />
@@ -92,39 +77,23 @@ const jumpToDateFn = date => {
             </h6>
 
             <div class="d-flex flex-column calendars-checkbox">
-              <VCheckbox
-                v-model="checkAll"
-                label="View all"
-              />
-              <VCheckbox
-                v-for="calendar in store.availableCalendars"
-                :key="calendar.label"
-                v-model="store.selectedCalendars"
-                :value="calendar.label"
-                :color="calendar.color"
-                :label="calendar.label"
-              />
+              <VCheckbox v-model="checkAll" label="View all" />
+              <VCheckbox v-for="calendar in store.availableCalendars" :key="calendar.label"
+                v-model="store.selectedCalendars" :value="calendar.label" :color="calendar.color"
+                :label="calendar.label" />
             </div>
           </div>
         </VNavigationDrawer>
 
         <VMain>
           <VCard flat>
-            <FullCalendar
-              ref="refCalendar"
-              :options="calendarOptions"
-            />
+            <FullCalendar ref="refCalendar" :options="calendarOptions" />
           </VCard>
         </VMain>
       </VLayout>
     </VCard>
-    <CalendarEventHandler
-      v-model:isDrawerOpen="isEventHandlerSidebarActive"
-      :event="event"
-      @add-event="addEvent"
-      @update-event="updateEvent"
-      @remove-event="removeEvent"
-    />
+    <CalendarEventHandler v-model:isDrawerOpen="isEventHandlerSidebarActive" :event="event" @add-event="addEvent"
+      @update-event="updateEvent" @remove-event="removeEvent" />
   </div>
 </template>
 
@@ -163,7 +132,7 @@ const jumpToDateFn = date => {
     }
   }
 
-  & ~ .flatpickr-calendar .flatpickr-weekdays {
+  &~.flatpickr-calendar .flatpickr-weekdays {
     margin-block: 0 4px;
   }
 }
