@@ -6,34 +6,32 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Usuario extends Authenticatable {
+class Usuario extends Authenticatable
+{
     use HasApiTokens, Notifiable;
 
     protected $table = 'usuarios';
-    protected $primaryKey = 'id'; 
+    protected $primaryKey = 'CODIGO';
+
     protected $fillable = [
-        'name',
-        'password',
-        'email',
-        'imageProfile',
+        'CODIGO',
+        'COD_FUNCIONARIO',
+        'NOME',
+        'SENHA',
+        'EMAIL',
+        'FOTO',
     ];
+
     protected $hidden = [
-        'password',
+        'SENHA',
     ];
 
     protected $casts = [
-        'id' => 'integer',
-        'name' => 'string',
-        'password' => 'string',
-        'email' => 'string',
-        'imageProfile' => 'string',
+        'CODIGO' => 'float',
+        'COD_FUNCIONARIO' => 'float',
+        'NOME' => 'string',
+        'SENHA' => 'string',
+        'EMAIL' => 'string',
+        'FOTO' => 'string',
     ];
-    
-    public function funcionario() {
-        return $this->belongsTo(Funcionario::class, 'funcionario_id', 'id'); 
-    }
-
-    public function projetos() {
-        return $this->hasMany(Projeto::class, 'usuario_id');
-    }
 }

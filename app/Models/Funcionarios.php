@@ -92,16 +92,4 @@ class Funcionarios extends Model {
     ];
 
     public $timestamps = true;
-    
-     public function projetos() {
-        return $this->hasMany(Projeto::class, 'programador_id'); // Se for programador
-    }
-
-    public function projetosAnalista() {
-        return $this->hasMany(Projeto::class, 'analista_id'); // Se for analista
-    }
-    
-    public function usuario() {
-        return $this->hasOne(Usuario::class, 'COD_FUNCIONARIO', 'CODIGO');
-    }
 }

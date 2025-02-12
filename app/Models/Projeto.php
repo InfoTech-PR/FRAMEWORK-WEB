@@ -9,40 +9,40 @@ class Projeto extends Model
 {
     use HasFactory;
 
+    // Definindo a tabela associada ao model
+    protected $table = 'projeto';
+
+    // Definindo a chave primária (se não for o padrão 'id')
+    protected $primaryKey = 'CODIGO';
+
+    // Desabilitar a auto-incrementação, já que 'CODIGO' é um float e não é auto-incremental
+    public $incrementing = false;
+
+    // Definindo os campos que podem ser preenchidos (mass assignment)
     protected $fillable = [
-        'usuario_id', 
-        'nomeProjeto', 
-        'cliente_id', 
-        'contatoEmpresa', 
-        'status', 
-        'analista_id', 
-        'programador_id', 
-        'observacoes', 
-        'dataInicial', 
-        'dataFinal'
+        'CODIGO',
+        'DATA_CADASTRO',
+        'DATA_ALTERACAO',
+        'COD_FUNCIONARIO_RESP',
+        'NOME_PROJETO',
+        'COD_CLIENTE',
+        'CONTATO_EMPRESA',
+        'COD_PROGRAMADOR_CHEFE',
+        'OBSERVACOES',
+        'COD_STATUS_SOFTWARE',
+        'NOTIF_CLIENTE',
+        'NOTIF_PROGRAMADOR',
+        'DATA_INICIAL',
+        'DATA_FINAL',
+        'NUM_DEPENDENCIAS',
+        'COD_ANALISTA_RESP'
     ];
 
-    // Relação com o usuário
-    public function usuario()
-    {
-        return $this->belongsTo(Usuario::class, 'usuario_id');
-    }
-
-    // Relação com o cliente
-    public function cliente()
-    {
-        return $this->belongsTo(Cliente::class, 'cliente_id');
-    }
-
-    // Relação com o analista
-    public function analista()
-    {
-        return $this->belongsTo(Funcionario::class, 'analista_id');
-    }
-
-    // Relação com o programador
-    public function programador()
-    {
-        return $this->belongsTo(Funcionario::class, 'programador_id');
-    }
+    // Definindo os campos que devem ser tratados como data
+    protected $dates = [
+        'DATA_CADASTRO',
+        'DATA_ALTERACAO',
+        'DATA_INICIAL',
+        'DATA_FINAL',
+    ];
 }

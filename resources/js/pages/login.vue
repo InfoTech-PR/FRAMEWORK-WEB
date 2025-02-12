@@ -18,8 +18,8 @@ definePage({
 })
 
 const credentials = ref({
-  name: '',
-  password: '',
+  NOME: '',
+  SENHA: '',
 })
 
 const login = async () => {
@@ -28,8 +28,8 @@ const login = async () => {
     const res = await $api('/auth/login', {
       method: 'POST',
       body: {
-        name: credentials.value.name,
-        password: credentials.value.password,
+        NOME: credentials.value.NOME,
+        SENHA: credentials.value.SENHA,
       },
     });
     if (res?.token && res?.userAbilityRules && res?.userData) {
@@ -71,12 +71,12 @@ const onSubmit = () => {
 }
 
 const isFormValid = computed(() => {
-  return credentials.value.name.trim() !== '' && credentials.value.password.trim() !== ''
+  return credentials.value.NOME.trim() !== '' && credentials.value.SENHA.trim() !== ''
 })
 
 const closeAndReset = () => {
-  credentials.value.name = '';
-  credentials.value.password = '';
+  credentials.value.NOME = '';
+  credentials.value.SENHA = '';
   error.value = false;
 }
 </script>
@@ -105,11 +105,10 @@ const closeAndReset = () => {
           <VForm ref="refVForm" @submit.prevent="onSubmit">
             <VRow>
               <VCol cols="12">
-                <AppTextField v-model="credentials.name" label="Usuário" type="text" />
+                <AppTextField v-model="credentials.NOME" label="Usuário" type="text" />
               </VCol>
               <VCol cols="12">
-                <AppTextField v-model="credentials.password" label="Senha"
-                  :type="isPasswordVisible ? 'text' : 'password'"
+                <AppTextField v-model="credentials.SENHA" label="Senha" :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible" />
               </VCol>
