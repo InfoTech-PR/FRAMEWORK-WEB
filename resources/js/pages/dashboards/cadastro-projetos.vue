@@ -5,6 +5,7 @@
   3. 
 
 -->
+
 <script>
 import axios from 'axios';
 
@@ -24,12 +25,12 @@ export default {
         dataFinal: ''
       },
       clientes: [],
-      status: ['Em Desenvolvimento', 'Fase Inicial',
-        'Estável, com necessidade de alterações', 'Estável, sem necessidade de alterações',
-        'Inutilizado', 'Abandonado', 'Cancelado'],
+      status: ['Em Desenvolvimento', 'Fase Inicial', 'Estável, com necessidade de alterações', 'Estável, sem necessidade de alterações', 'Inutilizado', 'Abandonado', 'Cancelado'],
       analistas: [],
       programadores: [],
       isLoading: false,
+      error: false,
+      errorMessage: '',
     };
   },
   created() {
@@ -44,7 +45,7 @@ export default {
       this.isLoading = true;
       try {
         const response = await axios.get('/api/clientes');
-        this.clientes = response.data.map(cliente => cliente.nome);
+        this.clientes = response.data.map(cliente => cliente.NOME);
       } catch (error) {
         console.error("Erro ao buscar clientes:", error);
       } finally {
@@ -55,8 +56,8 @@ export default {
       this.isLoading = true;
       try {
         const response = await axios.get('/api/funcionarios');
-        this.programadores = response.data.map(programador => programador.nome);
-        this.analistas = response.data.map(analista => analista.nome);
+        this.programadores = response.data.map(programador => programador.NOME);
+        this.analistas = response.data.map(analista => analista.NOME);
       } catch (error) {
         console.error("Erro ao buscar funcionarios:", error);
       } finally {
@@ -66,26 +67,47 @@ export default {
     async cadastrar() {
       this.isLoading = true;
       try {
-        const response = await axios.post('/api/cadastrarProjeto', this.form);
-        if (response.data.success) {
+        // Mapear os campos para os nomes esperados pelo back-end
+        const payload = {
+          NOME_PROJETO: this.form.nomeProjeto,
+          COD_CLIENTE: this.form.cliente,
+          CONTATO_EMPRESA: this.form.contatoEmpresa,
+          COD_STATUS_SOFTWARE: this.form.status,
+          COD_ANALISTA_RESP: this.form.analista,
+          COD_PROGRAMADOR_CHEFE: this.form.programador,
+          OBSERVACOES: this.form.observacoes,
+          DATA_INICIAL: this.form.dataInicial,
+          DATA_FINAL: this.form.dataFinal,
+        };
+
+        console.log('Dados enviados:', payload);
+
+        const response = await axios.post('/api/cadastrarProjeto', payload);
+
+        if (response.data.projeto) {
           this.$refs.form.reset();
-          this.initialFormState = { ...this.form };
-          alert('Cadastro realizado!');
+          this.error = true;
+          this.errorMessage = 'Cadastro realizado com sucesso!';
+
+          console.log('Projeto criado:', response.data.projeto);
         } else {
-          alert('Erro ao realizar cadastro. Tente novamente.');
+          this.error = true;
+          this.errorMessage = 'Erro ao realizar cadastro!';
         }
       } catch (error) {
-        console.error('Erro ao cadastrar:', error);
-        alert('Erro ao realizar cadastro. Tente novamente.');
+        this.error = true;
+        this.errorMessage = 'Erro ao realizar cadastro! Detalhes: ' + error.message;
       } finally {
         this.isLoading = false;
       }
     },
     cancelar() {
       this.$refs.form.reset();
-      this.initialFormState = { ...this.form };
     },
-  }
+    closeAndReset() {
+      this.error = false;
+    }
+  },
 }
 </script>
 
@@ -115,7 +137,7 @@ export default {
             </v-col>
             <v-col cols="6">
               <v-select v-if="clientes.length > 0" label="Cliente" v-model="form.cliente" :items="clientes"
-                :loading="isLoading" item-text="nome" item-value="nome"
+                :loading="isLoading" item-text="nome" item-value="id"
                 :placeholder="isLoading ? 'Carregando...' : 'Selecione um cliente'">
               </v-select>
             </v-col>
@@ -133,13 +155,13 @@ export default {
           <v-row>
             <v-col cols="6">
               <v-select v-if="programadores.length > 0" label="Programador" v-model="form.programador"
-                :items="programadores" :loading="isLoading" item-text="nome" item-value="nome"
+                :items="programadores" :loading="isLoading" item-text="nome" item-value="id"
                 :placeholder="isLoading ? 'Carregando...' : 'Selecione um Programador'">
               </v-select>
             </v-col>
             <v-col cols="6">
               <v-select v-if="analistas.length > 0" label="Analista" v-model="form.analista" :items="analistas"
-                :loading="isLoading" item-text="nome" item-value="nome"
+                :loading="isLoading" item-text="nome" item-value="id"
                 :placeholder="isLoading ? 'Carregando...' : 'Selecione um Analista'">
               </v-select>
             </v-col>
@@ -193,4 +215,21 @@ export default {
       </v-tab-item>
     </v-tabs-items>
   </v-container>
+
+  <!-- Modal de erros ou sucessos -->
+  <v-dialog v-model="error" max-width="400px" @click:outside="closeAndReset">
+    <template #default="{ close }">
+      <v-card>
+        <v-card-text class="text-center">
+          <h4 class="mb-2">
+            Opa, Houve um Problema!
+          </h4>
+          <p>{{ errorMessage }}</p>
+          <v-btn color="primary" @click="closeAndReset">
+            Fechar
+          </v-btn>
+        </v-card-text>
+      </v-card>
+    </template>
+  </v-dialog>
 </template>

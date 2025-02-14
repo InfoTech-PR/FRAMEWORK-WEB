@@ -10,7 +10,7 @@ use App\Http\Resources\UsuarioResource;
 
 Route::post('auth/login', [AuthController::class, 'login']);
 Route::group(['prefix' => 'auth'], function () {
-  Route::post('register', [AuthController::class, 'register']);
+  // Route::post('register', [AuthController::class, 'register']);
   Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user']);

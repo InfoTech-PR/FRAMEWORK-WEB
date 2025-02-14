@@ -6,7 +6,7 @@ use App\Models\Cliente;
 
 class ClienteController extends Controller {
     public function index() {
-        $clientes = Cliente::all(['nome']);
+        $clientes = Cliente::all(['NOME']);
         if ($clientes->isEmpty()){
             return "Não há nada cadastrado no banco!";
         }
